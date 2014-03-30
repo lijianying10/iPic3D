@@ -119,5 +119,6 @@ target_link_libraries(
 			hdf5_hl_cpp
 			hdf5
 			hdf5_hl
+			fftw3
 )
 

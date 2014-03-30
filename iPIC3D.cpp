@@ -40,6 +40,9 @@
 #include <string>
 #include <sstream>
 
+//include for FFTW
+#include <fftw3.h>
+
 // implementation (should be compiled separately)
 #include "utility/diagnostics.h"
 
@@ -53,6 +56,31 @@ MPIdata *mpi;
 TimeTasks timeTasks;
 
 int main(int argc, char **argv) {
+
+	//invoke FFTW here
+	fftw_complex *in,*out;
+	fftw_plan p;
+	in = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * 10);
+	out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * 10);
+	p = fftw_plan_dft_1d(10, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
+
+	for(int i = 0; i < 10; i++){
+		in[i][0] = i;
+		in[i][1] = 0;
+	}
+
+	fftw_execute(p);
+	for(int i = 0; i < 10; i++){
+			cout<<in[i][0]<<endl;
+			cout<<in[i][1]<<endl;
+		}
+	fftw_destroy_plan(p);
+	fftw_free(in);
+	fftw_free(out);
+
+	exit(0);
+
+
   // initialize MPI environment
   // nprocs = number of processors
   // myrank = rank of tha process*/

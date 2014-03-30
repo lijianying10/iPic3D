@@ -7,6 +7,13 @@ cmake_minimum_required(VERSION 2.8.8)
 project(iPic3D)
 
 #
+# Set compiler
+#
+
+SET(CMAKE_C_COMPILER /opt/intel/impi/4.1.1.036/bin64/mpicc)
+SET(CMAKE_CXX_COMPILER /opt/intel/impi/4.1.1.036/bin64/mpicxx)
+
+#
 # Set exec path
 #
 
@@ -17,8 +24,14 @@ set(LIBRARY_OUTPUT_PATH lib)
 # Find third class libraries
 #
 
-find_package(HDF5 COMPONENTS HL C REQUIRED)
-find_package(MPI REQUIRED)
+#find_package(HDF5 COMPONENTS HL C REQUIRED)
+#find_package(MPI REQUIRED)
+set(HDF5_INCLUDE_DIRS /opt/hdf5/include/)
+set(MPI_INCLUDE_PATH  /opt/intel/impi/4.1.1.036/intel64/include/)
+set(FFTW_INCLUDE_PATH  /opt/fftw/include)
+set(HDF5_LIBRARY_DIRS /opt/hdf5/lib/)
+set(MPI_LIBRARY_DIRS /opt/intel/impi/4.1.1.036/intel64/lib/)
+set(FFTW_LIBRARY_DIRS /opt/fftw/lib)
 
 #
 # include and lib directories
@@ -28,11 +41,13 @@ include_directories(
         include
         ${HDF5_INCLUDE_DIRS}
         ${MPI_INCLUDE_PATH}
+		  ${FFTW_INCLUDE_PATH}
 )
 
 link_directories(
         ${HDF5_LIBRARY_DIRS}
         ${MPI_LIBRARY_DIRS}
+		 ${FFTW_LIBRARY_DIRS}
 )
 
 #
@@ -99,8 +114,10 @@ add_executable(
 #
 
 target_link_libraries(
-         iPIC3D
-         ${HDF5_LIBRARIES}
-         ${HDF5_HL_LIBRARIES}
-         ${MPI_LIBRARIES}
+			iPIC3D
+			hdf5_cpp
+			hdf5_hl_cpp
+			hdf5
+			hdf5_hl
 )
+
